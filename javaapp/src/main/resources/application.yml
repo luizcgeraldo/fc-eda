@@ -1,0 +1,57 @@
+server:
+  port: 3003
+
+spring:
+  kafka:
+    bootstrap-servers: kafka:29092
+    consumer:
+      properties:
+        schema:
+          registry:
+            url: control-center:9021
+    producer:
+      properties:
+        schema:
+          registry:
+            url: control-center:9021
+  main:
+    allow-circular-references: true
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    url: jdbc:mysql://mysql2:3306/balances?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+      hibernate.connection.provider_disables_autocommit: false
+      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_query_cache: false
+      #hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+      hibernate.generate_statistics: false
+      # Modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      # Modify fetch size as necessary
+      hibernate.jdbc.fetch_size: 150
+      hibernate.criteria.literal_handling_mode: BIND
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+      hibernate.default_schema: balances
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
+application:
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 100 # Number of objects in each cache entry
